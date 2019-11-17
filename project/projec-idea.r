@@ -3,8 +3,30 @@
 # from the package MASS we are using the dataset survey
 install.packages("MASS")
 
-require("surver")
+require("survey")
 
+
+# exercise, age, pulse
+
+# !!
+observationCount <- dim(survey)[1]
+no_na_survey <- subset(survey, !is.na(survey$Sex) & !is.na(survey$Wr.Hnd) & !is.na(survey$Pulse) & 
+                                !is.na(survey$Exer) & !is.na(survey$Smoke) & !is.na(survey$Height)) 
+
+
+# 1. Категорийни (обясняващи) VS категорийни (зависими)
+barplot(prop.table(x = table(no_na_survey$Exer, no_na_survey$Sex), margin = 2), legend.text = T)
+
+barplot(prop.table(x = table(survey$Sex, survey$Exer), margin = 2), legend.text = T)
+
+
+# 2. Категорийни (обясняващи) VS числови (зависими)
+#       sex         height or Wr.Hnd
+boxplot(no_na_survey$Height ~ no_na_survey$Sex)
+boxplot(no_na_survey$Wr.Hnd ~ no_na_survey$Sex)
+
+
+# have to remove na
 sexes <- survey$Sex
 heights <- survey$Height
 handWidth <- survey$Wr.Hnd
