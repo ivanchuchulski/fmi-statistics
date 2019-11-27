@@ -10,48 +10,58 @@ library("MASS") # or require("MASS")
 # Sex, Wr.Hnd, NW.Hnd, W.Hnd, Fold, Pulse, Clap, Exer, Smoke, Height, M.I, Age
 
 # wanted columns
-# Sex, Wr.Hnd, Pulse, Exer, Smoke, Height, Age
+# Sex(cat), Wr.Hnd(num cont), Pulse(num cont), Exer(cat), Smoke(cat), Height(num cont), Age(num cont)
+
+# 
 
 # getting the wanted columns and removing NA values
 columns_to_keep <- c("Sex", "Wr.Hnd", "Pulse", "Exer", "Smoke", "Height", "Age")
 
-survey_data <- survey[columns_to_keep]
+modified_data <- survey[columns_to_keep]
 
-survey_data <- subset(survey_data, !is.na(survey_data$Sex) & 
-                                    !is.na(survey_data$Wr.Hnd) & 
-                                    !is.na(survey_data$Pulse) & 
-                                    !is.na(survey_data$Exer) & 
-                                    !is.na(survey_data$Smoke) & 
-                                    !is.na(survey_data$Height) & 
-                                    !is.na(survey_data$Age)) 
+modified_data <- subset(modified_data, !is.na(modified_data$Sex) & 
+                                    !is.na(modified_data$Wr.Hnd) & 
+                                    !is.na(modified_data$Pulse) & 
+                                    !is.na(modified_data$Exer) & 
+                                    !is.na(modified_data$Smoke) & 
+                                    !is.na(modified_data$Height) & 
+                                    !is.na(modified_data$Age)) 
 # maybe round Age?
 
 # to write to csv file
-write.csv(survey_data, 'D:\\surveyData.csv', row.names = FALSE)
+write.csv(modified_data, 'D:\\surveyData.csv', row.names = FALSE)
 
 # exercise, age, pulse
 survey_observations <- dim(survey)[1]
-survey_observations_ <- dim(survey_data)[1]
+survey_observations_ <- dim(modified_data)[1]
 
 
 # 0. Анализ на една променлива
+# може би променливите ще са Sex(категорийна), Height(числова непрекъсната), Pulse(числова непрекъсната)
+# други възможни са Smoke или Exer като категорийни и Age и Pulse
 
 # 1. Категорийни (обясняващи) VS категорийни (зависими)
-barplot(prop.table(x = table(no_na_survey$Exer, no_na_survey$Sex), margin = 2), legend.text = T)
-barplot(prop.table(x = table(survey$Sex, survey$Exer), margin = 2), legend.text = T)
+barplot(prop.table(x = table(modified_data$Exer, modified_data$Sex), margin = 2), legend.text = T)
 
 barplot(prop.table(x = table(survey$Exer, survey$Sex), margin = 2), legend.text = T)
 barplot(prop.table(x = table(survey$Sex, survey$Exer), margin = 2), legend.text = T)
 
 
 # 2. Категорийни (обясняващи) VS числови (зависими)
-#       sex to Height or Wr.Hnd
-boxplot(no_na_survey$Height ~ no_na_survey$Sex)
-boxplot(no_na_survey$Wr.Hnd ~ no_na_survey$Sex)
+boxplot(modified_data$Height ~ modified_data$Sex)
+boxplot(modified_data$Wr.Hnd ~ modified_data$Sex)
 
-boxplot(survey$Height ~ survey$Sex)
-boxplot(survey$Wr.Hnd ~ survey$Sex)
+boxplot(modified_data$Pulse ~ modified_data$Exer)
+boxplot(modified_data$Pulse ~ modified_data$Smoke)
 
+
+# 4. Числови (обясняващи) VS числови (зависими)
+plot(modified_data$Height, modified_data$Pulse)
+
+plot(modified_data$Age, modified_data$Pulse)
+
+
+# old ideas #######################
 # have to remove na
 sexes <- survey$Sex
 heights <- survey$Height
