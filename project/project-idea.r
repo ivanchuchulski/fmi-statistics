@@ -12,6 +12,7 @@
 
 # from the package MASS we are using the dataset survey
 install.packages("MASS")
+
 library("MASS") # or require("MASS")
 
 # getting the wanted columns and removing NA values
@@ -46,8 +47,8 @@ survey_observations_ <- dim(modified_data)[1]
         barplot(height = prop.table(table(modified_data$Sex)), col = "cadetblue1")
 
         # piechart
-        percents <- round(100*table_sex/sum(table_sex), 1)
-        colors <- rainbow(n = length(table_sex)) 
+        percents <- round(100*table_sex / sum(table_sex), 1)
+        colors <- c("coral1", "cyan1")
         # fix colors, provide custom ones
 
         pie(x = table_sex, main = "Полове", labels = percents, col = colors)
