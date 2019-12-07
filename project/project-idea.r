@@ -2,17 +2,17 @@
 # 
 # 
 
-# from the package MASS we are using the dataset survey
-install.packages("MASS")
-library("MASS") # or require("MASS")
 
 # all columns in dataframe survey
 # Sex, Wr.Hnd, NW.Hnd, W.Hnd, Fold, Pulse, Clap, Exer, Smoke, Height, M.I, Age
 
 # wanted columns
 # Sex(cat), Wr.Hnd(num cont), Pulse(num cont), Exer(cat), Smoke(cat), Height(num cont), Age(num cont)
+ 
 
-# 
+# from the package MASS we are using the dataset survey
+install.packages("MASS")
+library("MASS") # or require("MASS")
 
 # getting the wanted columns and removing NA values
 columns_to_keep <- c("Sex", "Wr.Hnd", "Pulse", "Exer", "Smoke", "Height", "Age")
