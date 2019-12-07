@@ -37,17 +37,47 @@ survey_observations_ <- dim(modified_data)[1]
 
 
 # 0. Анализ на една променлива
-# може би променливите ще са Sex(категорийна), Height(числова непрекъсната), Pulse(числова непрекъсната)
-# други възможни са Smoke или Exer като категорийни и Age и Pulse
+    # Sex (категорийна)
+        # summary
+        summary(modified_data$Sex)
 
-# 1. Категорийни (обясняващи) VS категорийни (зависими)
-barplot(prop.table(x = table(modified_data$Exer, modified_data$Sex), margin = 2), legend.text = T)
+        # barplot
+        table_sex <- table(modified_data$Sex)
+        barplot(height = prop.table(table(modified_data$Sex)), col = "cadetblue1")
 
-barplot(prop.table(x = table(survey$Exer, survey$Sex), margin = 2), legend.text = T)
-barplot(prop.table(x = table(survey$Sex, survey$Exer), margin = 2), legend.text = T)
+        # piechart
+        percents <- round(100*table_sex/sum(table_sex), 1)
+        colors <- rainbow(n = length(table_sex)) 
+        # fix colors, provide custom ones
 
+        pie(x = table_sex, main = "Полове", labels = percents, col = colors)
+        legend(x = "topleft", legend = c("мъже", "жени"), cex = 1, fill = colors)
+
+        # резултатите показват, че разпределението е поравно между момичетата и момчетата
+
+    # Height (числова непрекъсната)
+        # summary
+        summary(modified_data$Height)
+
+        # hist
+        hist(modified_data$Height, main = "честотно разпределение", xlab = "височина", ylab = "брой", col = "chartreuse1")
+        hist(modified_data$Height, main = "вероятностно разпределение", xlab = "височина", ylab = "честота",
+            col = "chartreuse1", prob = T)
+
+        # boxplot
+        
+
+        # qqplot
+
+    # Wr.Hnd (числова непрекъсната)
+        # summary
+        summary(modified_data$Wr.Hnd)
+        # hist
+        # boxplot
+        # qqplot
 
 # 2. Категорийни (обясняващи) VS числови (зависими)
+
 boxplot(modified_data$Height ~ modified_data$Sex)
 boxplot(modified_data$Wr.Hnd ~ modified_data$Sex)
 
@@ -59,6 +89,14 @@ boxplot(modified_data$Pulse ~ modified_data$Smoke)
 plot(modified_data$Height, modified_data$Pulse)
 
 plot(modified_data$Age, modified_data$Pulse)
+
+##################
+
+# 1. Категорийни (обясняващи) VS категорийни (зависими)
+barplot(prop.table(x = table(modified_data$Exer, modified_data$Sex), margin = 2), legend.text = T)
+
+barplot(prop.table(x = table(survey$Exer, survey$Sex), margin = 2), legend.text = T)
+barplot(prop.table(x = table(survey$Sex, survey$Exer), margin = 2), legend.text = T)
 
 
 # old ideas #######################
