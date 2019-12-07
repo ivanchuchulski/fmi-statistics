@@ -49,7 +49,6 @@ survey_observations_ <- dim(modified_data)[1]
         # piechart
         percents <- round(100*table_sex / sum(table_sex), 1)
         colors <- c("coral1", "cyan1")
-        # fix colors, provide custom ones
 
         pie(x = table_sex, main = "Полове", labels = percents, col = colors)
         legend(x = "topleft", legend = c("мъже", "жени"), cex = 1, fill = colors)
@@ -61,14 +60,17 @@ survey_observations_ <- dim(modified_data)[1]
         summary(modified_data$Height)
 
         # hist
-        hist(modified_data$Height, main = "честотно разпределение", xlab = "височина", ylab = "брой", col = "chartreuse1")
-        hist(modified_data$Height, main = "вероятностно разпределение", xlab = "височина", ylab = "честота",
+        hist(modified_data$Height, main = "честотно разпределение", xlab = "ръст в см", ylab = "брой", col = "chartreuse1")
+        hist(modified_data$Height, main = "вероятностно разпределение", xlab = "ръст в см", ylab = "честота",
             col = "chartreuse1", prob = T)
 
         # boxplot
-        
+        boxplot(modified_data$Height, main = "ръст", ylab = "cm", col = "lightskyblue")
 
         # qqplot
+        normal_distrib <- rnorm(n = 10^2, mean = mean(modified_data$Height), sd = sd(modified_data$Height))
+        qqplot(modified_data$Height, normal_distrib, main = "ръст", ylab = "теоретично разпределение")
+        abline(a = 0, b = 1)
 
     # Wr.Hnd (числова непрекъсната)
         # summary
@@ -87,8 +89,10 @@ boxplot(modified_data$Pulse ~ modified_data$Smoke)
 
 
 # 4. Числови (обясняващи) VS числови (зависими)
-plot(modified_data$Height, modified_data$Pulse)
 
+plot(modified_data$Height, modified_data$Wr.Hnd)
+
+plot(modified_data$Height, modified_data$Pulse)
 plot(modified_data$Age, modified_data$Pulse)
 
 ##################
