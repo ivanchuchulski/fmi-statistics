@@ -23,6 +23,9 @@ mydata <- subset(mydata, !is.na(mydata$Sex) &
                                         !is.na(mydata$Wr.Hnd) & 
                                         !is.na(mydata$Height))
 
+# rename column
+colnames(mydata)[2] <- "Handspan"
+
 # to write to csv file
 write.csv(mydata, 'D:\\surveyData.csv', row.names = FALSE)
 
@@ -62,8 +65,9 @@ survey_observations_ <- dim(mydata)[1]
         boxplot(mydata$Height, main = "ръст", ylab = "cm", col = "lightskyblue")
 
         # qqplot
-        normal_distrib <- rnorm(n = 10^2, mean = mean(mydata$Height), sd = sd(mydata$Height))
-        qqplot(mydata$Height, normal_distrib, main = "ръст", ylab = "теоретично разпределение")
+        set.seed(9504)
+        height_normal_distrib <- rnorm(n = 1000, mean = mean(mydata$Height), sd = sd(mydata$Height))
+        qqplot(mydata$Height, height_normal_distrib, main = "ръст", ylab = "теоретично нормално разпределение")
         abline(a = 0, b = 1)
 
         # tests
@@ -72,27 +76,52 @@ survey_observations_ <- dim(mydata)[1]
         # for normal distribution
         shapiro.test(mydata$Height)
 
-        females <- mydata$Height[which(mydata$Sex == 'Female')]
-        males <- mydata$Height[which(mydata$Sex == 'Male')]
+        fem_heights <- mydata$Height[which(mydata$Sex == 'Female')]
+        male_heights <- mydata$Height[which(mydata$Sex == 'Male')]
 
-        shapiro.test(females)
-        shapiro.test(males)
+        shapiro.test(fem_heights)
+        shapiro.test(male_heights)
 
-        t.test(females, males)
-        hist(females)
-        hist(males)
+        t.test(fem_heights, male_heights)
+        hist(fem_heights)
+        hist(male_heights)
 
-    # Wr.Hnd (числова непрекъсната)
+    # Handspan (числова непрекъсната)
         # summary
-        summary(mydata$Wr.Hnd)
-        # hist
+        summary(mydata$Handspan)
+        hist(mydata$Handspan, main = "честотно разпределение", xlab = "педя в см", ylab = "брой", col = "chartreuse1")
+        hist(mydata$Handspan, main = "вероятностно разпределение", xlab = "педя в см", ylab = "честота",
+            col = "chartreuse1", prob = T)
+
         # boxplot
+        boxplot(mydata$Handspan, main = "педя", ylab = "cm", col = "lightskyblue")
+
         # qqplot
+        set.seed(9504)
+        handspan_normal_distrib <- rnorm(n = 1000, mean = mean(mydata$Handspan), sd = sd(mydata$Handspan))
+        qqplot(mydata$Handspan, handspan_normal_distrib, main = "педя", ylab = "теоретично нормално разпределение")
+        abline(a = 0, b = 1)
+
+        # tests
+        alpha <- 0.05
+
+        # for normal distribution
+        shapiro.test(mydata$Handspan)
+
+        fem_handspan <- mydata$Handspan[which(mydata$Sex == 'Female')]
+        male_handspan <- mydata$Handspan[which(mydata$Sex == 'Male')]
+
+        shapiro.test(fem_handspan)
+        shapiro.test(male_handspan)
+
+        t.test(fem_handspan, male_handspan)
+        hist(fem_handspan)
+        hist(male_handspan)
 
 # 2. Категорийни (обясняващи) VS числови (зависими)
 
 boxplot(mydata$Height ~ mydata$Sex)
-boxplot(mydata$Wr.Hnd ~ mydata$Sex)
+boxplot(mydata$Handspan ~ mydata$Sex)
 
 boxplot(mydata$Pulse ~ mydata$Exer)
 boxplot(mydata$Pulse ~ mydata$Smoke)
@@ -100,7 +129,7 @@ boxplot(mydata$Pulse ~ mydata$Smoke)
 
 # 4. Числови (обясняващи) VS числови (зависими)
 
-plot(mydata$Height, mydata$Wr.Hnd)
+plot(mydata$Height, mydata$Handspan)
 
 plot(mydata$Height, mydata$Pulse)
 plot(mydata$Age, mydata$Pulse)
@@ -132,45 +161,6 @@ students <- data.frame(sexes, heights, handWidth)
 
 t1 <- boxplot(students$heights ~ students$sexes)
 t2 <- boxplot(students$handWidth ~ students$sexes)
-
-# ################
-# numbered variables
-    # pointsPerGame
-    # reboundsPerGame
-# category variables
-    # "guard", "forward", "center"
-
-playerNames <- c("Klay Thompson", "Kyrie Irving", "James Harden", "Kemba Walker",
-            "Khris Middleton", "Jimmy Butler", "Gordon Hayward", "Jayson Tatum",
-             "Dwight Howard", "Nicola Jokic", "Nikola Vucevic", "Andre Drummond")
-
-pointsPerGame <- c(19.5, 22.4, 24.6, 21.0,
-                    15.7, 16.7, 15.2, 15.2,
-                    17.2, 16.3, 15.7, 14.3)
-
-reboundsPerGame <- c(3.5, 3.7, 5.2, 3.9, 
-                       4.5, 4.9, 4.3, 5.6,
-                        12.6, 9.5, 10.2, 13.8)
-
-fieldPositions <- c("guard", "guard", "guard", "guard", 
-                    "forward", "forward", "forward", "forward", 
-                    "center", "center", "center", "center")
-
-basketball <- data.frame(playerNames, pointsPerGame, reboundsPerGame, fieldPositions)
-
-boxplot(basketball$pointsPerGame[fieldPositions ==  "guard"], 
-        basketball$pointsPerGame[fieldPositions == "forward"], 
-        basketball$pointsPerGame[fieldPositions == "center"], 
-        col = rainbow(3), 
-        names = c("guard pts", "forward pts", "forward pts"))
-
-boxplot(basketball$reboundsPerGame[fieldPositions ==  "guard"], 
-        basketball$reboundsPerGame[fieldPositions == "forward"], 
-        basketball$reboundsPerGame[fieldPositions == "center"], 
-        col = rainbow(3), 
-        names = c("guard rebs", "forward rebs", "forward rebs"))
-
-hist(x = basketball$pointsPerGame, col = "green", xlab = "ppg")
 
 
 
