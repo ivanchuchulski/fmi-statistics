@@ -16,35 +16,29 @@ install.packages("MASS")
 library("MASS") # or require("MASS")
 
 # getting the wanted columns and removing NA values
-columns_to_keep <- c("Sex", "Wr.Hnd", "Pulse", "Exer", "Smoke", "Height", "Age")
+columns_to_keep <- c("Sex", "Wr.Hnd", "Height")
+mydata <- survey[columns_to_keep]
 
-modified_data <- survey[columns_to_keep]
-
-modified_data <- subset(modified_data, !is.na(modified_data$Sex) & 
-                                    !is.na(modified_data$Wr.Hnd) & 
-                                    !is.na(modified_data$Pulse) & 
-                                    !is.na(modified_data$Exer) & 
-                                    !is.na(modified_data$Smoke) & 
-                                    !is.na(modified_data$Height) & 
-                                    !is.na(modified_data$Age)) 
-# maybe round Age?
+mydata <- subset(mydata, !is.na(mydata$Sex) & 
+                                        !is.na(mydata$Wr.Hnd) & 
+                                        !is.na(mydata$Height))
 
 # to write to csv file
-write.csv(modified_data, 'D:\\surveyData.csv', row.names = FALSE)
+write.csv(mydata, 'D:\\surveyData.csv', row.names = FALSE)
 
 # exercise, age, pulse
 survey_observations <- dim(survey)[1]
-survey_observations_ <- dim(modified_data)[1]
+survey_observations_ <- dim(mydata)[1]
 
 
 # 0. Анализ на една променлива
     # Sex (категорийна)
         # summary
-        summary(modified_data$Sex)
+        summary(mydata$Sex)
 
         # barplot
-        table_sex <- table(modified_data$Sex)
-        barplot(height = prop.table(table(modified_data$Sex)), col = "cadetblue1")
+        table_sex <- table(mydata$Sex)
+        barplot(height = prop.table(table(mydata$Sex)), col = "cadetblue1")
 
         # piechart
         percents <- round(100*table_sex / sum(table_sex), 1)
@@ -57,57 +51,64 @@ survey_observations_ <- dim(modified_data)[1]
 
     # Height (числова непрекъсната)
         # summary
-        summary(modified_data$Height)
+        summary(mydata$Height)
 
         # hist
-        hist(modified_data$Height, main = "честотно разпределение", xlab = "ръст в см", ylab = "брой", col = "chartreuse1")
-        hist(modified_data$Height, main = "вероятностно разпределение", xlab = "ръст в см", ylab = "честота",
+        hist(mydata$Height, main = "честотно разпределение", xlab = "ръст в см", ylab = "брой", col = "chartreuse1")
+        hist(mydata$Height, main = "вероятностно разпределение", xlab = "ръст в см", ylab = "честота",
             col = "chartreuse1", prob = T)
 
         # boxplot
-        boxplot(modified_data$Height, main = "ръст", ylab = "cm", col = "lightskyblue")
+        boxplot(mydata$Height, main = "ръст", ylab = "cm", col = "lightskyblue")
 
         # qqplot
-        normal_distrib <- rnorm(n = 10^2, mean = mean(modified_data$Height), sd = sd(modified_data$Height))
-        qqplot(modified_data$Height, normal_distrib, main = "ръст", ylab = "теоретично разпределение")
+        normal_distrib <- rnorm(n = 10^2, mean = mean(mydata$Height), sd = sd(mydata$Height))
+        qqplot(mydata$Height, normal_distrib, main = "ръст", ylab = "теоретично разпределение")
         abline(a = 0, b = 1)
 
+        # tests
+        alpha <- 0.05
 
-        shapiro.test(modified_data$Height)
-        a <- modified_data$Height[which(modified_data$Sex =='Female')]
-        b <- modified_data$Height[which(modified_data$Sex =='Male')]
+        # for normal distribution
+        shapiro.test(mydata$Height)
 
-        t.test(a, b)
-        hist(a)
-        hist(b)
+        females <- mydata$Height[which(mydata$Sex == 'Female')]
+        males <- mydata$Height[which(mydata$Sex == 'Male')]
+
+        shapiro.test(females)
+        shapiro.test(males)
+
+        t.test(females, males)
+        hist(females)
+        hist(males)
 
     # Wr.Hnd (числова непрекъсната)
         # summary
-        summary(modified_data$Wr.Hnd)
+        summary(mydata$Wr.Hnd)
         # hist
         # boxplot
         # qqplot
 
 # 2. Категорийни (обясняващи) VS числови (зависими)
 
-boxplot(modified_data$Height ~ modified_data$Sex)
-boxplot(modified_data$Wr.Hnd ~ modified_data$Sex)
+boxplot(mydata$Height ~ mydata$Sex)
+boxplot(mydata$Wr.Hnd ~ mydata$Sex)
 
-boxplot(modified_data$Pulse ~ modified_data$Exer)
-boxplot(modified_data$Pulse ~ modified_data$Smoke)
+boxplot(mydata$Pulse ~ mydata$Exer)
+boxplot(mydata$Pulse ~ mydata$Smoke)
 
 
 # 4. Числови (обясняващи) VS числови (зависими)
 
-plot(modified_data$Height, modified_data$Wr.Hnd)
+plot(mydata$Height, mydata$Wr.Hnd)
 
-plot(modified_data$Height, modified_data$Pulse)
-plot(modified_data$Age, modified_data$Pulse)
+plot(mydata$Height, mydata$Pulse)
+plot(mydata$Age, mydata$Pulse)
 
 ##################
 
 # 1. Категорийни (обясняващи) VS категорийни (зависими)
-barplot(prop.table(x = table(modified_data$Exer, modified_data$Sex), margin = 2), legend.text = T)
+barplot(prop.table(x = table(mydata$Exer, mydata$Sex), margin = 2), legend.text = T)
 
 barplot(prop.table(x = table(survey$Exer, survey$Sex), margin = 2), legend.text = T)
 barplot(prop.table(x = table(survey$Sex, survey$Exer), margin = 2), legend.text = T)
