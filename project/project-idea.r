@@ -72,6 +72,15 @@ survey_observations_ <- dim(modified_data)[1]
         qqplot(modified_data$Height, normal_distrib, main = "ръст", ylab = "теоретично разпределение")
         abline(a = 0, b = 1)
 
+
+        shapiro.test(modified_data$Height)
+        a <- modified_data$Height[which(modified_data$Sex =='Female')]
+        b <- modified_data$Height[which(modified_data$Sex =='Male')]
+
+        t.test(a, b)
+        hist(a)
+        hist(b)
+
     # Wr.Hnd (числова непрекъсната)
         # summary
         summary(modified_data$Wr.Hnd)
