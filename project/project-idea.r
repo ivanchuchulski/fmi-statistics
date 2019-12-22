@@ -79,12 +79,20 @@ survey_observations_ <- dim(mydata)[1]
         fem_heights <- mydata$Height[which(mydata$Sex == 'Female')]
         male_heights <- mydata$Height[which(mydata$Sex == 'Male')]
 
-        shapiro.test(fem_heights)
+        shapiro.test(fem_heights) 
+        # 0.1313
+
         shapiro.test(male_heights)
+        # 0.7162
 
         t.test(fem_heights, male_heights)
-        hist(fem_heights)
-        hist(male_heights)
+
+        hist(fem_heights, main = "вероятностно разпределение", xlab = "ръст на жени в см", ylab = "честота",
+            col = "chartreuse1", prob = T)
+
+        hist(male_heights, main = "вероятностно разпределение", xlab = "ръст на мъже в см", ylab = "честота",
+            col = "chartreuse1", prob = T)
+
 
     # Handspan (числова непрекъсната)
         # summary
@@ -112,27 +120,40 @@ survey_observations_ <- dim(mydata)[1]
         male_handspan <- mydata$Handspan[which(mydata$Sex == 'Male')]
 
         shapiro.test(fem_handspan)
+        # 0.002367
+
         shapiro.test(male_handspan)
+        # 0.06273
 
         t.test(fem_handspan, male_handspan)
-        hist(fem_handspan)
-        hist(male_handspan)
+
+        hist(fem_handspan, main = "вероятностно разпределение", xlab = "педя в см", ylab = "честота",
+            col = "chartreuse1", prob = T)
+
+        hist(male_handspan, main = "вероятностно разпределение", xlab = "педя в см", ylab = "честота",
+            col = "chartreuse1", prob = T)
 
 # 2. Категорийни (обясняващи) VS числови (зависими)
-
-boxplot(mydata$Height ~ mydata$Sex)
-boxplot(mydata$Handspan ~ mydata$Sex)
-
-boxplot(mydata$Pulse ~ mydata$Exer)
-boxplot(mydata$Pulse ~ mydata$Smoke)
-
+        
+    boxplot(mydata$Height ~ mydata$Sex)
+    boxplot(mydata$Handspan ~ mydata$Sex)
 
 # 4. Числови (обясняващи) VS числови (зависими)
 
-plot(mydata$Height, mydata$Handspan)
+    plot(mydata$Handspan, mydata$Height)
 
-plot(mydata$Height, mydata$Pulse)
-plot(mydata$Age, mydata$Pulse)
+    rho <- round(cor(mydata$Height, mydata$Handspan, method = "pearson"), 3)
+
+    plot(fem_handspan, fem_heights)
+    plot(male_handspan, male_heights)
+
+    rho_females <- round(cor(fem_handspan, fem_heights, method = "spearman"), digits = 3)
+    rho_males <- round(cor(male_handspan, male_heights, method = "pearson"), digits = 3)
+
+    abs(rho)
+    abs(rho_females)
+    abs(rho_males)
+
 
 ##################
 
