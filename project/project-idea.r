@@ -27,7 +27,7 @@ mydata <- subset(mydata, !is.na(mydata$Sex) &
 colnames(mydata)[2] <- "Handspan"
 
 # to write to csv file
-write.csv(mydata, 'D:\\surveyData.csv', row.names = FALSE)
+write.csv(mydata, 'D:\\survey_data.csv', row.names = FALSE)
 
 # exercise, age, pulse
 survey_observations <- dim(survey)[1]
@@ -57,9 +57,9 @@ survey_observations_ <- dim(mydata)[1]
         summary(mydata$Height)
 
         # hist
-        hist(mydata$Height, main = "честотно разпределение", xlab = "ръст в см", ylab = "брой", col = "chartreuse1")
-        hist(mydata$Height, main = "вероятностно разпределение", xlab = "ръст в см", ylab = "честота",
-            col = "chartreuse1", prob = T)
+        hist(mydata$Height, main = "вероятностно разпределение", 
+            xlab = "ръст в см", ylab = "честота",
+            col = "chartreuse1", prob = TRUE)
 
         # boxplot
         boxplot(mydata$Height, main = "ръст", ylab = "cm", col = "lightskyblue")
@@ -74,64 +74,76 @@ survey_observations_ <- dim(mydata)[1]
         alpha <- 0.05
 
         # for normal distribution
-        shapiro.test(mydata$Height)
+        shapiro.test(mydata$Height) # 0.08102
 
         fem_heights <- mydata$Height[which(mydata$Sex == 'Female')]
         male_heights <- mydata$Height[which(mydata$Sex == 'Male')]
 
-        shapiro.test(fem_heights) 
-        # 0.1313
+        shapiro.test(fem_heights)  # 0.1313
 
-        shapiro.test(male_heights)
-        # 0.7162
+        shapiro.test(male_heights) # 0.7162
 
         t.test(fem_heights, male_heights)
 
+        par(mfrow = c(1, 2))
         hist(fem_heights, main = "вероятностно разпределение", xlab = "ръст на жени в см", ylab = "честота",
-            col = "chartreuse1", prob = T)
+            col = "chartreuse1", prob = TRUE)
 
         hist(male_heights, main = "вероятностно разпределение", xlab = "ръст на мъже в см", ylab = "честота",
-            col = "chartreuse1", prob = T)
+            col = "chartreuse1", prob = TRUE)
+        par(mfrow = c(1, 1))
+
+        # имаме нормално разпределение
+        # локация
+        mean(mydata$Height)
+        # дисперсия
+        sd(mydata$Height)
 
 
     # Handspan (числова непрекъсната)
         # summary
         summary(mydata$Handspan)
-        hist(mydata$Handspan, main = "честотно разпределение", xlab = "педя в см", ylab = "брой", col = "chartreuse1")
+
+        # histogram
         hist(mydata$Handspan, main = "вероятностно разпределение", xlab = "педя в см", ylab = "честота",
-            col = "chartreuse1", prob = T)
+            col = "chartreuse1", prob = TRUE)
 
         # boxplot
         boxplot(mydata$Handspan, main = "педя", ylab = "cm", col = "lightskyblue")
 
         # qqplot
         set.seed(9504)
-        handspan_normal_distrib <- rnorm(n = 1000, mean = mean(mydata$Handspan), sd = sd(mydata$Handspan))
-        qqplot(mydata$Handspan, handspan_normal_distrib, main = "педя", ylab = "теоретично нормално разпределение")
+        handspan_normal_distrib <- rnorm(n = 500, mean = mean(mydata$Handspan), sd = sd(mydata$Handspan))
+        qqplot(mydata$Handspan, handspan_normal_distrib, main = "педя", ylab = "теоретичното нормално разпределение")
         abline(a = 0, b = 1)
 
         # tests
         alpha <- 0.05
 
         # for normal distribution
-        shapiro.test(mydata$Handspan)
+        shapiro.test(mydata$Handspan) # 0.003831
 
         fem_handspan <- mydata$Handspan[which(mydata$Sex == 'Female')]
         male_handspan <- mydata$Handspan[which(mydata$Sex == 'Male')]
 
-        shapiro.test(fem_handspan)
-        # 0.002367
+        shapiro.test(fem_handspan) # 0.002367
 
-        shapiro.test(male_handspan)
-        # 0.06273
+        shapiro.test(male_handspan) # 0.06273
 
         t.test(fem_handspan, male_handspan)
 
-        hist(fem_handspan, main = "вероятностно разпределение", xlab = "педя в см", ylab = "честота",
-            col = "chartreuse1", prob = T)
+        hist(fem_handspan, main = "вероятностно разпределение", 
+            xlab = "педя на жени в см", ylab = "честота",
+            col = "chartreuse1", prob = TRUE)
 
-        hist(male_handspan, main = "вероятностно разпределение", xlab = "педя в см", ylab = "честота",
-            col = "chartreuse1", prob = T)
+        hist(male_handspan, main = "вероятностно разпределение", 
+            xlab = "педя на мъже в см", ylab = "честота",
+            col = "chartreuse1", prob = TRUE)
+
+        # нямаме нормално разпределение
+        median(mydata$Handspan)
+        # дисперсия
+        mad(mydata$Handspan)
 
 # 2. Категорийни (обясняващи) VS числови (зависими)
         
@@ -139,6 +151,11 @@ survey_observations_ <- dim(mydata)[1]
     boxplot(mydata$Handspan ~ mydata$Sex)
 
 # 4. Числови (обясняващи) VS числови (зависими)
+
+    # correlation
+        # pearson -> in normal distribution
+        # spearman
+        # kendall
 
     plot(mydata$Handspan, mydata$Height)
 
@@ -150,9 +167,9 @@ survey_observations_ <- dim(mydata)[1]
     rho_females <- round(cor(fem_handspan, fem_heights, method = "spearman"), digits = 3)
     rho_males <- round(cor(male_handspan, male_heights, method = "pearson"), digits = 3)
 
-    abs(rho)
-    abs(rho_females)
-    abs(rho_males)
+    abs(rho) # 0.602
+    abs(rho_females) # 0.341
+    abs(rho_males) # 0.385
 
 
 ##################
