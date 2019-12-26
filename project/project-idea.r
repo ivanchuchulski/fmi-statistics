@@ -20,8 +20,8 @@ columns_to_keep <- c("Sex", "Wr.Hnd", "Height")
 mydata <- survey[columns_to_keep]
 
 mydata <- subset(mydata, !is.na(mydata$Sex) & 
-                                        !is.na(mydata$Wr.Hnd) & 
-                                        !is.na(mydata$Height))
+                        !is.na(mydata$Wr.Hnd) & 
+                        !is.na(mydata$Height))
 
 # rename column
 colnames(mydata)[2] <- "Handspan"
@@ -29,27 +29,27 @@ colnames(mydata)[2] <- "Handspan"
 # to write to csv file
 write.csv(mydata, 'D:\\survey_data.csv', row.names = FALSE)
 
-# exercise, age, pulse
 survey_observations <- dim(survey)[1]
 survey_observations_ <- dim(mydata)[1]
 
-
 # 0. Анализ на една променлива
-    # Sex (категорийна)
+    # Sex (категорийна номинална)
         # summary
         summary(mydata$Sex)
 
-        # barplot
-        table_sex <- table(mydata$Sex)
-        barplot(height = prop.table(table(mydata$Sex)), col = "cadetblue1")
+        par(mfrow = c(1, 2))
 
-        # piechart
-        percents <- round(100*table_sex / sum(table_sex), 1)
-        colors <- c("coral1", "cyan1")
+            table_sex <- table(mydata$Sex)
+            percents <- round(100*table_sex / sum(table_sex), 1)
+            colors <- c("coral1", "cyan1")
 
-        pie(x = table_sex, main = "Полове", labels = percents, col = colors)
-        legend(x = "topleft", legend = c("мъже", "жени"), cex = 1, fill = colors)
+            barplot(table_sex, names.arg = c("жени", "мъже"), col = "darkgoldenrod1")
 
+            pie(x = table_sex, main = "Полове", labels = percents, col = colors)
+            legend(x = "topleft", legend = c("жени", "мъже"), cex = 1, fill = colors)
+
+        par(mfrow = c(1, 1))
+     
         # резултатите показват, че разпределението е поравно между момичетата и момчетата
 
     # Height (числова непрекъсната)
