@@ -67,7 +67,7 @@ survey_observations_ <- dim(mydata)[1]
         # qqplot
         set.seed(9504)
         height_normal_distrib <- rnorm(n = 1000, mean = mean(mydata$Height), sd = sd(mydata$Height))
-        qqplot(mydata$Height, height_normal_distrib, main = "ръст", ylab = "теоретично нормално разпределение")
+        qqplot(mydata$Height, height_normal_distrib, xlab = "ръст", ylab = "теоретично нормално разпределение")
         abline(a = 0, b = 1)
 
         # tests
@@ -106,13 +106,13 @@ survey_observations_ <- dim(mydata)[1]
 
         # histogram
         hist(mydata$Handspan, main = "вероятностно разпределение", xlab = "педя в см", ylab = "честота",
-            col = "chartreuse1", prob = TRUE)
+            col = "salmon2", prob = TRUE)
 
         # boxplot
-        boxplot(mydata$Handspan, main = "педя", ylab = "cm", col = "lightskyblue")
+        boxplot(mydata$Handspan, main = "педя", ylab = "cm", col = "slateblue1")
 
         # qqplot
-        set.seed(9504)
+        set.seed(734)
         handspan_normal_distrib <- rnorm(n = 500, mean = mean(mydata$Handspan), sd = sd(mydata$Handspan))
         qqplot(mydata$Handspan, handspan_normal_distrib, main = "педя", ylab = "теоретичното нормално разпределение")
         abline(a = 0, b = 1)
