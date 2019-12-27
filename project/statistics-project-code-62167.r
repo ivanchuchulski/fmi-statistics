@@ -4,7 +4,7 @@
 install.packages("MASS")
 
 # зареждане на пакета от данни
-library("MASS") # or require("MASS")
+library("MASS")
 
 # извличане на данните само от желаните колони
 columns_to_keep <- c("Sex", "Wr.Hnd", "Height")
@@ -51,7 +51,8 @@ write.csv(mydata, 'D:\\survey_data.csv', row.names = FALSE)
     set.seed(9504)
     height_normal_distrib <- rnorm(n = 1000, mean = mean(mydata$Height), sd = sd(mydata$Height))
 
-    qqplot(mydata$Height, height_normal_distrib, xlab = "ръст", ylab = "теоретично нормално разпределение")
+    qqplot(mydata$Height, height_normal_distrib, main = "ръст", 
+            xlab = "реални стойности", ylab = "теоретично нормално разпределение")
     abline(a = 0, b = 1)
 
     # ниво на съгласие
@@ -63,9 +64,11 @@ write.csv(mydata, 'D:\\survey_data.csv', row.names = FALSE)
 
     # имаме нормално разпределение
     # локация
-    mean(mydata$Height)
+    round(mean(mydata$Height), 3)
+        # 172.385
     # дисперсия
-    sd(mydata$Height)
+    round(sd(mydata$Height), 3)
+        # 9.895
 
 # 2.3. педя, числова непрекъсната
     par(mfrow = c(1, 2))
@@ -81,19 +84,23 @@ write.csv(mydata, 'D:\\survey_data.csv', row.names = FALSE)
     set.seed(734)
     handspan_normal_distrib <- rnorm(n = 1000, mean = mean(mydata$Handspan), sd = sd(mydata$Handspan))
 
-    qqplot(mydata$Handspan, handspan_normal_distrib, main = "педя", ylab = "теоретичното нормално разпределение")
+    qqplot(mydata$Handspan, handspan_normal_distrib, main = "педя", 
+            xlab = "реални стойности", ylab = "теоретичното нормално разпределение")
     abline(a = 0, b = 1)
 
     # ниво на съгласие
     alpha <- 0.05
 
     shapiro.test(mydata$Handspan) 
-    # p-value = 0.003831 < 0.05 = alpha
+        # p-value = 0.003831 < 0.05 = alpha
 
     # нямаме нормално разпределение
-    median(mydata$Handspan)
+    # локация
+    round(median(mydata$Handspan), 3)
+        # 18.5
     # дисперсия
-    mad(mydata$Handspan)
+    round(mad(mydata$Handspan), 3)
+        # 1.483
 
 # 3. Изследване на взаимодействия между променливите
 # 3.1. категорийни обясняващи и числови зависими
