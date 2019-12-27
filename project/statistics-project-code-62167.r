@@ -147,27 +147,26 @@ write.csv(mydata, 'D:\\mydata.csv', row.names = FALSE)
 
         shapiro.test(male_handspan) 
             # p-value = 0.06273 > 0.05 = alpha
-            
+
         # педята на жените не е нормално разпределена, а мъжката е 
 
 # 3.2. числови обясняващи и числови зависими
+    fem_handspan <- mydata$Handspan[which(mydata$Sex == 'Female')]
+    male_handspan <- mydata$Handspan[which(mydata$Sex == 'Male')]
 
-    # correlation
-        # pearson -> in normal distribution
-        # spearman
-        # kendall
+    fem_heights <- mydata$Height[which(mydata$Sex == 'Female')]
+    male_heights <- mydata$Height[which(mydata$Sex == 'Male')]
 
-    plot(mydata$Handspan, mydata$Height)
+    plot(mydata$Handspan, mydata$Height, xlab = "педя", ylab = "ръст")
+    plot(fem_handspan, fem_heights, xlab = "педя на жени", ylab = "ръст на жени", col = "blue1")
+    plot(male_handspan, male_heights, xlab = "мъже", ylab = "ръст на мъже", col = "brown2")
 
-    rho <- round(cor(mydata$Height, mydata$Handspan, method = "pearson"), 3)
-
-    plot(fem_handspan, fem_heights)
-    plot(male_handspan, male_heights)
-
+    # корелация
+    rho <- round(cor(mydata$Handspan, mydata$Height, method = "spearman"), 3)
     rho_females <- round(cor(fem_handspan, fem_heights, method = "spearman"), digits = 3)
     rho_males <- round(cor(male_handspan, male_heights, method = "pearson"), digits = 3)
 
-    abs(rho) # 0.602
+    abs(rho) # 0.646
     abs(rho_females) # 0.341
     abs(rho_males) # 0.385
 
