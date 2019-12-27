@@ -19,7 +19,7 @@ mydata <- subset(mydata, !is.na(mydata$Sex) &
 colnames(mydata)[2] <- "Handspan"
 
 # записваме данните в csv файл
-write.csv(mydata, 'D:\\survey_data.csv', row.names = FALSE)
+write.csv(mydata, 'D:\\mydata.csv', row.names = FALSE)
 
 # 2. Изследване на променливите поотделно
 # 2.1. пол, категорийна номинална
@@ -128,7 +128,8 @@ write.csv(mydata, 'D:\\survey_data.csv', row.names = FALSE)
         # женския и мъжкия ръст са нормално разпределени
 
     # 3.1.2. пол и педя
-        boxplot(mydata$Handspan ~ mydata$Sex)
+        boxplot(mydata$Handspan ~ mydata$Sex, 
+            xlab = "пол", ylab = "педя", col = "steelblue1")
 
         fem_handspan <- mydata$Handspan[which(mydata$Sex == 'Female')]
         male_handspan <- mydata$Handspan[which(mydata$Sex == 'Male')]
@@ -141,18 +142,12 @@ write.csv(mydata, 'D:\\survey_data.csv', row.names = FALSE)
                 col = "olivedrab2", prob = TRUE)
         par(mfrow = c(1, 1))
 
-        par(mfrow = c(1, 2))
-            boxplot(fem_handspan, main = "педя на жени", ylab = "cm", col = "orchid1")
-            boxplot(male_handspan, main = "педя на мъже", ylab = "cm", col = "orchid1")
-        par(mfrow = c(1, 1))
-
-
         shapiro.test(fem_handspan) 
             # p-value = 0.002367 < 0.05 = alpha
 
         shapiro.test(male_handspan) 
             # p-value = 0.06273 > 0.05 = alpha
-
+            
         # педята на жените не е нормално разпределена, а мъжката е 
 
 # 3.2. числови обясняващи и числови зависими
