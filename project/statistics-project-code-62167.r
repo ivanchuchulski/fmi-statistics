@@ -105,7 +105,8 @@ write.csv(mydata, 'D:\\survey_data.csv', row.names = FALSE)
 # 3. Изследване на взаимодействия между променливите
 # 3.1. категорийни обясняващи и числови зависими
     # 3.1.1. пол и ръст
-        boxplot(mydata$Height ~ mydata$Sex)
+        boxplot(mydata$Height ~ mydata$Sex,  
+            xlab = "пол", ylab = "ръст", col = "royalblue1")
 
         fem_heights <- mydata$Height[which(mydata$Sex == 'Female')]
         male_heights <- mydata$Height[which(mydata$Sex == 'Male')]
@@ -118,11 +119,6 @@ write.csv(mydata, 'D:\\survey_data.csv', row.names = FALSE)
                 col = "springgreen1", prob = TRUE)
         par(mfrow = c(1, 1))
 
-        par(mfrow = c(1, 2))
-            boxplot(fem_heights, main = "ръст на жени", ylab = "cm", col = "turquoise1")
-            boxplot(male_heights, main = "ръст на мъже", ylab = "cm", col = "turquoise1")
-        par(mfrow = c(1, 1))
-
         shapiro.test(fem_heights)  
             # p-value = 0.1313 > 0.05 = alpha
 
@@ -130,6 +126,11 @@ write.csv(mydata, 'D:\\survey_data.csv', row.names = FALSE)
             # p-value = 0.7162 > 0.05 = alpha
 
         # женския и мъжкия ръст са нормално разпределени
+
+
+        От графиката виждаме, че по-голямата част от жените са по-ниски от мъжете, защото обхвата на първия и третия квартил на женския ръст строго под първия и третия квартил на мъжките измервания. Както видяхме по-рано броят на наблюденията е поравно между половете, можем да кажем, че резултатите отговарят на действителността, а именно, че полът е обясняваща променлива за ръста. Също така можем да забележим, че най-високите стойности на женския ръст са равни или малко над медианата на мъжкия, а има и мъж, който е по-нисък от 50-те процента на ръста на жените.
+Ако разгледаме данните, като разделим височината на жените и мъжете в отделни променливи виждаме от хистограмата и от тестовете, че те отговарят на нормалното разпределение. 
+
 
     # 3.1.2. пол и педя
         boxplot(mydata$Handspan ~ mydata$Sex)
