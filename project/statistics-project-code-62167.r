@@ -158,8 +158,13 @@ write.csv(mydata, 'D:\\mydata.csv', row.names = FALSE)
     male_heights <- mydata$Height[which(mydata$Sex == 'Male')]
 
     plot(mydata$Handspan, mydata$Height, xlab = "педя", ylab = "ръст")
+    abline(a = 80, b = 5, lwd = 1, col = "black")
+
     plot(fem_handspan, fem_heights, xlab = "педя на жени", ylab = "ръст на жени", col = "blue1")
+    abline(a = 80, b = 5, lwd = 1, col = "black")
+
     plot(male_handspan, male_heights, xlab = "мъже", ylab = "ръст на мъже", col = "brown2")
+    abline(a = 80, b = 5, lwd = 1, col = "black")
 
     # корелация
     rho <- round(cor(mydata$Handspan, mydata$Height, method = "spearman"), 3)
