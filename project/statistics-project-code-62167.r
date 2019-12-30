@@ -41,8 +41,8 @@ write.csv(mydata, 'D:\\mydata.csv', row.names = FALSE)
         # хистограма
         hist(mydata$Height, main = "вероятностно разпределение", 
             xlab = "ръст в см", ylab = "честота",
-            col = "chartreuse1", prob = TRUE)
-
+            col = "chartreuse1", prob = TRUE, ylim = c(0, 0.05))
+            
         # boxplot
         boxplot(mydata$Height, main = "ръст", ylab = "cm", col = "lightskyblue")
     par(mfrow = c(1, 1))
@@ -73,8 +73,9 @@ write.csv(mydata, 'D:\\mydata.csv', row.names = FALSE)
 # 2.3. педя, числова непрекъсната
     par(mfrow = c(1, 2))
         # хистограма
-        hist(mydata$Handspan, main = "вероятностно разпределение", xlab = "педя в см", ylab = "честота",
-        col = "salmon2", prob = TRUE)
+        hist(mydata$Handspan, main = "вероятностно разпределение", 
+            xlab = "педя в см", ylab = "честота",
+            col = "salmon2", prob = TRUE, ylim = c(0, 0.25))
 
         # boxplot
         boxplot(mydata$Handspan, main = "педя", ylab = "cm", col = "slateblue1")
@@ -91,6 +92,7 @@ write.csv(mydata, 'D:\\mydata.csv', row.names = FALSE)
     # ниво на съгласие
     alpha <- 0.05
 
+    # тест за нормално разпределение
     shapiro.test(mydata$Handspan) 
         # p-value = 0.003831 < 0.05 = alpha
 
@@ -174,10 +176,4 @@ write.csv(mydata, 'D:\\mydata.csv', row.names = FALSE)
     abs(rho) # 0.646
     abs(rho_females) # 0.341
     abs(rho_males) # 0.385
-
-
-
-
-
-
 
