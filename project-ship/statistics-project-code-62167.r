@@ -20,6 +20,9 @@ colnames(mydata)[2] <- "Handspan"
 # записваме данните в csv файл
 write.csv(mydata, 'D:\\mydata.csv', row.names = FALSE)
 
+# данните също могат да се заредят със 
+# mydata <- read.csv('path_to_file\\mydata.csv')
+
 # 2. Изследване на променливите поотделно
 # 2.1. пол, категорийна номинална
     summary(mydata$Sex)
