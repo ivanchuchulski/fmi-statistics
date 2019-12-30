@@ -1,4 +1,5 @@
-
+# Проект по статистика и емпирични методи практикум
+# Иван Чучулски 62167
 
 # инсталиране на пакета от данни
 install.packages("MASS")
@@ -6,14 +7,12 @@ install.packages("MASS")
 # зареждане на пакета от данни
 library("MASS")
 
-# извличане на данните само от желаните колони
+# извличане на данните само от желаните колони и премахване на липсващи стойности
 columns_to_keep <- c("Sex", "Wr.Hnd", "Height")
 
 mydata <- survey[columns_to_keep]
 
-mydata <- subset(mydata, !is.na(mydata$Sex) & 
-                        !is.na(mydata$Wr.Hnd) & 
-                        !is.na(mydata$Height))
+mydata <- subset(mydata, !is.na(mydata$Sex) & !is.na(mydata$Wr.Hnd) & !is.na(mydata$Height))
 
 # преименуваме колоната за дължината на дланта
 colnames(mydata)[2] <- "Handspan"
@@ -40,8 +39,8 @@ write.csv(mydata, 'D:\\mydata.csv', row.names = FALSE)
     par(mfrow = c(1, 2))
         # хистограма
         hist(mydata$Height, main = "вероятностно разпределение", 
-            xlab = "ръст в см", ylab = "честота",
-            col = "chartreuse1", prob = TRUE, ylim = c(0, 0.05))
+                xlab = "ръст в см", ylab = "честота",
+                col = "chartreuse1", prob = TRUE, ylim = c(0, 0.05))
             
         # boxplot
         boxplot(mydata$Height, main = "ръст", ylab = "cm", col = "lightskyblue")
@@ -61,8 +60,8 @@ write.csv(mydata, 'D:\\mydata.csv', row.names = FALSE)
     # тест за нормално разпределение
     shapiro.test(mydata$Height) 
         # p-value = 0.08102 > 0.05 = alpha
+        # имаме нормално разпределение
 
-    # имаме нормално разпределение
     # локация
     round(mean(mydata$Height), 3)
         # 172.385
@@ -95,8 +94,8 @@ write.csv(mydata, 'D:\\mydata.csv', row.names = FALSE)
     # тест за нормално разпределение
     shapiro.test(mydata$Handspan) 
         # p-value = 0.003831 < 0.05 = alpha
+        # нямаме нормално разпределение
 
-    # нямаме нормално разпределение
     # локация
     round(median(mydata$Handspan), 3)
         # 18.5
@@ -107,18 +106,15 @@ write.csv(mydata, 'D:\\mydata.csv', row.names = FALSE)
 # 3. Изследване на взаимодействия между променливите
 # 3.1. категорийни обясняващи и числови зависими
     # 3.1.1. пол и ръст
-        boxplot(mydata$Height ~ mydata$Sex,  
-            xlab = "пол", ylab = "ръст", col = "royalblue1")
+        boxplot(mydata$Height ~ mydata$Sex,  xlab = "пол", ylab = "ръст", col = "royalblue1")
 
         fem_heights <- mydata$Height[which(mydata$Sex == 'Female')]
         male_heights <- mydata$Height[which(mydata$Sex == 'Male')]
 
         par(mfrow = c(1, 2))
-            hist(fem_heights, main = "", xlab = "ръст на жени в см", ylab = "честота",
-                col = "springgreen1", prob = TRUE)
+            hist(fem_heights, main = "", xlab = "ръст на жени в см", ylab = "честота", col = "springgreen1", prob = TRUE)
 
-            hist(male_heights, main = "", xlab = "ръст на мъже в см", ylab = "честота",
-                col = "springgreen1", prob = TRUE)
+            hist(male_heights, main = "", xlab = "ръст на мъже в см", ylab = "честота", col = "springgreen1", prob = TRUE)
         par(mfrow = c(1, 1))
 
         shapiro.test(fem_heights)  
@@ -137,11 +133,9 @@ write.csv(mydata, 'D:\\mydata.csv', row.names = FALSE)
         male_handspan <- mydata$Handspan[which(mydata$Sex == 'Male')]
 
         par(mfrow = c(1, 2))
-            hist(fem_handspan, main = "", xlab = "педя на жени в см", ylab = "честота",
-                col = "olivedrab2", prob = TRUE)
+            hist(fem_handspan, main = "", xlab = "педя на жени в см", ylab = "честота", col = "olivedrab2", prob = TRUE)
 
-            hist(male_handspan, main = "", xlab = "педя на мъже в см", ylab = "честота",
-                col = "olivedrab2", prob = TRUE)
+            hist(male_handspan, main = "", xlab = "педя на мъже в см", ylab = "честота", col = "olivedrab2", prob = TRUE)
         par(mfrow = c(1, 1))
 
         shapiro.test(fem_handspan) 
