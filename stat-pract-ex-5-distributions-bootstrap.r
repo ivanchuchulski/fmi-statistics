@@ -16,30 +16,44 @@
 
 ############################
 
-
-
-
+# Дискректи разпределения
 #   1. Биномно разпределение
-#       Биномното разпределение е дисктретно разпределение, което брои успехите в редица 
+#       Биномното разпределение е дискретно разпределение, което брои успехите в редица 
 #   от n независими опити. Биномното разпределение приема параметри "n" - броя на опитите 
 #   и "p" - вероятността за настъпване на успех.
-#       Вероятността за настъпване на събитие "x" е P(x) = C(n, x)*p^x*(1-p)^(n-x), 
-#   за x = 0, ..., n
+#       P(X = k) = choose(size, k) * p^k * (1-p)^(size-k),  за k = 0, ..., size
+#       E[X] = size * p
+#       D[X] = size * p * (1-p)
 
-#       В R, функциите за биномно разпределение са rbinom(), dbinom(), pbinom(), qbinom()
+#   dbinom(x, size, prob, log = FALSE)
+#   pbinom(q, size, prob, lower.tail = TRUE, log.p = FALSE)
+#   qbinom(p, size, prob, lower.tail = TRUE, log.p = FALSE)
+#   rbinom(n, size, prob)
 
-#   n - броят на симулациите, size - големианта на редицата от независимите опити
+#   x, q - vector of quantiles.
+#   p	- vector of probabilities.
+#   size - големианта на редицата от независимите опити
 #   p - вероятността за настъпване на успех от един опит
+#   lower.tail - logical; if TRUE (default), probabilities are P[X ≤ x], otherwise, P[X > x].
+#   n - броят на симулациите
+ 
+# The quantile is defined as the smallest value x such that F(x) ≥ p, where F is the distribution function.
+
 
 #       Частния случай, когато size = 1 поражда Бернулиево разпределение. Тоест,
 #   искаме да генерираме само един опит с вероятност за успех "p"
-rbinom(n = 1, size = 1, p = 0.2)    
+rbinom(n = 1, size = 1, p = 0.2)   
+# [1] 0 -> само 0 или 1
+
 rbinom(n = 10, size = 1, p = 0.2)
+# [1] 0 0 0 0 0 0 1 1 1 0 -> 10 опита от 0-ли и 1-ци
 
 #       Биномно разпределение
-rbinom(n = 1, size = 6, p = 0.2)    
-rbinom(n = 10, size = 6, p = 0.2)
+rbinom(n = 1, size = 6, p = 0.2)   # правим 1 симулация всяка от 6 опита с вер 0.2 
+# [1] 2 -> имаме 2 успеха от 6-те опита
 
+rbinom(n = 10, size = 6, p = 0.2)   # 10 симулации всяка от 6 опита с вер 0.2
+# [1] 2 1 1 2 0 1 3 1 2 2 -> брой успехи във всеки от 10-те опита
 
 set.seed(4442)
 rbd <- rbinom(n = 100, size = 6, p = 0.2)
@@ -50,21 +64,33 @@ summary(rbd)
 var(rbd)
 
 
-
-
 #   2. Геометрично разпределение
 #       Геометричното разпределение е дискретно разпределение, което показва броя на 
 #   опитите до настъпването на успех.
-#       Вероятността е P(x) = p*(1-p)^x, за x = 0, ..., n
+#     Вариант к неуспеха до 1-ви успех на к+1-вия опит
+#       P(X = k) = p * (1-p)^k      за k = 0, 1, ...
+#       E[X] = (1-p) / p
+#       D[X] = (1-p) / (p^2)
 
 set.seed(46871)
 rgd <- rgeom(n = 100, prob = 0.2)
-#       Средната стойност са равни на 1/p, "p" е вероятността за успех.    
-#       Вариацията е равна на (1-p)/(p^2)
+
+#   dgeom(x, prob, log = FALSE)
+#   pgeom(q, prob, lower.tail = TRUE, log.p = FALSE)
+#   qgeom(p, prob, lower.tail = TRUE, log.p = FALSE)
+#   rgeom(n, prob)
+
+#   x, q - vector of quantiles representing the number of failures in a sequence of Bernoulli trials before success occurs.
+#   p -vector of probabilities.
+#   n - number of observations. If length(n) > 1, the length is taken to be the number required.
+#   prob - probability of success in each trial. 0 < prob <= 1.
+#   log, log.p - logical; if TRUE, probabilities p are given as log(p).
+#   lower.tail - logical; if TRUE (default), probabilities are P[X ≤ x], otherwise, P[X > x].
+
+# The quantile is defined as the smallest value x such that F(x) ≥ p, where F is the distribution function.
+
 summary(rgd)
 var(rgd)
-
-
 
 
 #	3. Отрицателно биномно разпределение
@@ -75,16 +101,19 @@ var(rgd)
 #       Функцията на масата е P(x) = C(x+r-1, x)*(1-p)^r*p^x, за x = 0, 1, ...
 #		Очакването на отрицателното биномно разпределение е r*(1-p)/p, а вариацията е r*(1-p)/p^2
 
+#   dnbinom(x, size, prob, mu, log = FALSE)
+#   pnbinom(q, size, prob, mu, lower.tail = TRUE, log.p = FALSE)
+#   qnbinom(p, size, prob, mu, lower.tail = TRUE, log.p = FALSE)
+#   rnbinom(n, size, prob, mu)
+
 set.seed(4457)
 N <- 1000
 nbd <- rnbinom(n = N, size = 30, prob = 0.2)
 #	size - броят на успехите
 hist(nbd)
 
-
 summary(nbd)
 var(nbd)
-
 
 
 
@@ -93,7 +122,17 @@ var(nbd)
 #   "lambda" (n*p) на брой независими събития да се случат в определен интервал от време. 
 #   При Поасоновото разпределение "n" клони към безкрайност, a "p" клони към нула. Това 
 #   е и връзката между биномно разпределение и поасоново
-#       Вероятността е P(x) = exp(-lambda)*lambda^x/(x!)
+
+#       P(X = k) = exp(-lambda)*lambda^k / (k!)      за k = 0, 1, ...
+#       E[X] = lambda
+#       D[X] = lambda
+
+#   dpois(x, lambda, log = FALSE)
+#   ppois(q, lambda, lower.tail = TRUE, log.p = FALSE)
+#   qpois(p, lambda, lower.tail = TRUE, log.p = FALSE)
+#   rpois(n, lambda)
+
+# lamda = positive R
 
 #   При поасоновото разпределение, средната стойност и вариацията са равни на lambda
 set.seed(1477)
@@ -102,6 +141,28 @@ summary(rpd)
 var(rpd)
 
 
+#	10. Хипергеометрично разпределение
+#		Това е дискретно разпределение, което описва вероятността от k успеха в n на брой извадка,
+#	без замествания, взета от крайна популация с размер N и съдържаща K на брой успеха. Разпределението
+#	намира приложение при изследването дали една популация е overrepresented или underrepresented.
+#		Функцията на масата е P(x) = C(K, k)*C((N - K), (n - k)) / C(N, n)
+#		Очакването е n*K/N, а вариацията - n*(K/N)*((N-K)/N)*((N-n)/(N-1))
+
+#       P(X = x) = chose(m, x) * choose(n, (k - x)) / C(m + n, k)     за k = 0, 1, ...
+#       E[X] = k*m / (m + n)
+#       D[X] = ...
+
+#   dhyper(x, m, n, k, log = FALSE)
+#   phyper(q, m, n, k, lower.tail = TRUE, log.p = FALSE)
+#   qhyper(p, m, n, k, lower.tail = TRUE, log.p = FALSE)
+#   rhyper(nn, m, n, k)
+
+# m - the number of white balls in the urn.
+# n - the number of black balls in the urn.
+# k - the number of balls drawn from the urn.
+# nn - number of observations. If length(nn) > 1, the length is taken to be the number required.
+
+# Непрекъснати разпределения
 
 #   5. Равномерно непрекъснато разпределение
 #       Равномерното непрекъснато разпределение много наподобява равнометрното дискретно.
@@ -205,15 +266,6 @@ hist(rch)
 
 summary(rch)
 var(rch)
-
-
-
-#	10. Хипергеометрично разпределение
-#		Това е дискретно разпределение, което описва вероятността от k успеха в n на брой извадка,
-#	без замествания, взета от крайна популация с размер N и съдържаща K на брой успеха. Разпределението
-#	намира приложение при изследването дали една популация е overrepresented или underrepresented.
-#		Функцията на масата е P(x) = C(K, k)*C((N - K), (n - k)) / C(N, n)
-#		Очакването е n*K/N, а вариацията - n*(K/N)*((N-K)/N)*((N-n)/(N-1))
 
 
 
