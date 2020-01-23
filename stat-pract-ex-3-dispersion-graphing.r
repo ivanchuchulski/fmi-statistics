@@ -95,11 +95,9 @@ round(sum(dist2 >= mu - 3*sigma & dist2 <= mu + 3*sigma)*100/N, 2)
 
 
 #            3.3. The five number summary
-#       тази статтистика най-често показва минималната стойност, 1-ви квартил, медиана (2-ри квартил),  
-#   3-ти квартил и максималната стойност
-#       В R използваме фунцкциите summary() и fivenum()
 
-
+#    fivenum() -> min, 1st quartile, median(2nd quartile), 3rd quartile, max
+#    sumamry() -> min, 1st quartile, median(2nd quartile), mean, 3rd quartile, max
 
 summary(dist1)
 fivenum(dist1)
