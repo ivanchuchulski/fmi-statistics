@@ -47,7 +47,40 @@ plot(pred1, df$y)
         qqnorm(resid1)
         qqline(resid1)
 
+# 2. Location tests
+    # 1 variable
+        # if normally distributed 
+        t.test(vec, mu = H0_value, alternative = "")
+            # alternative in {less, greater, two.sided}
+            # if mu in conf interval we accept H0, else we reject it
+            
+        # if not
+        wilcox.test(vec, mu = H0_value, alternative = "", conf.int = TRUE)
+            # alternative in {less, greater}
+
+    # 2 variables
+    # H0 : E[X] - E[Y] = 0
+    # H1 : E[X] - E[Y] != 0
+        # if all have normal distirbution :
+            # check for equal variances
+            var.test(x, y)      # H0 : equal variances
+            t.test(x, y, var.equal = TRUE) # if not equal variances var.equal = FALSE  
+
+        #  if one doesn't have :
+        wilcox.test(y ~ x, data = df, conf.int = TRUE, exact = FALSE)
+
+    # more the 2 variables
+    # Н0: E[X1] = E[X2] = ... = E[Xn]  for all 1, ..., n 
+    # H1: E[Xi] != E[Xj]               for at least one i != j.
+        # if all have normal distirbution :
+        # check for homoscedasticity
+            barlett.test(y ~ x, data = df)      # H0 : equal variances
+            result <- aov(y ~ x, data = df)
+            summary(result)
+
+        #  if one doesn't have :
+        kruskal.test(y ~ x, data = df) 
 
 
-
+        
 
