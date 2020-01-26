@@ -54,3 +54,8 @@
 		quantile(x, 0.75) - quantile(x, 0.25)
 	}
 
+
+	df <- data.frame(values = c(x, y, z),
+					group = c(rep("1", length(x)),
+								rep("2", length(y)),
+								rep("3", length(z))))
