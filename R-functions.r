@@ -56,6 +56,6 @@
 
 
 	df <- data.frame(values = c(x, y, z),
-					group = c(rep("1", length(x)),
-								rep("2", length(y)),
-								rep("3", length(z))))
+					group = c(rep("first", length(x)),
+								rep("second", length(y)),
+								rep("third", length(z))))
