@@ -25,17 +25,17 @@ rep(c(1, 2, 3), times = c(3, 2, 1)) # or rep(c(1, 2, 3), 3:1)
 match(c("Alice", "Bob"), names(testScores))
 
 # "recycling"
-n <- 1? # get 1? elements of x
-x[1 + ?:(n-1) %% length(x)] # use remainder for indices
+n <- 10 # get 10 elements of x
+x[1 + 0:(n-1) %% length(x)] # use remainder for indices
 ## [1] 1 2 3 1 2 3 1 2 3 1
 
-sprintf("X%s", 1:1?)
-## [1] "X1" "X2" "X3" "X4" "X5" "X6" "X7" "X8" "X9" "X1?"
+sprintf("X%s", 1:10)
+## [1] "X1" "X2" "X3" "X4" "X5" "X6" "X7" "X8" "X9" "X10"
 
 sprintf("%8d", c(1, 12, 123, 1234, 12345))
 ## [1] " 1" " 12" " 123" " 1234" " 12345"
 
-paste("X", 1:1?, sep="")
+paste("X", 1:10, sep="")
 ## [1] "X1" "X2" "X3" "X4" "X5" "X6" "X7" "X8" "X9" "X1?"
 
 paste("The", "quick", "brown", "fox", "...", sep="_")
